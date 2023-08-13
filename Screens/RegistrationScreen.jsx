@@ -59,6 +59,9 @@ const RegistrationScreen = () => {
                   onFocus={() => {
                     setIsKeyboardShown(true);
                   }}
+                  onBlur={() => {
+                    setIsKeyboardShown(false);
+                  }}
                 />
 
                 <TextInput
@@ -66,6 +69,9 @@ const RegistrationScreen = () => {
                   placeholder="Адреса електронної пошти"
                   onFocus={() => {
                     setIsKeyboardShown(true);
+                  }}
+                  onBlur={() => {
+                    setIsKeyboardShown(false);
                   }}
                 />
 
@@ -76,6 +82,9 @@ const RegistrationScreen = () => {
                     secureTextEntry={!showPassword}
                     onFocus={() => {
                       setIsKeyboardShown(true);
+                    }}
+                    onBlur={() => {
+                      setIsKeyboardShown(false);
                     }}
                   />
                   <TouchableOpacity

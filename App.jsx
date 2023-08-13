@@ -13,25 +13,24 @@ import LoginScreen from "./Screens/LoginScreen";
 import RegistrationScreen from "./Screens/RegistrationScreen";
 
 export default function App() {
-  const [fontsLoad] = useFonts({
+  const [fontsLoaded] = useFonts({
     "Roboto-Bold": require("./assets/fonts/Roboto-Bold.ttf"),
     "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
   });
 
-  if (!fontsLoad) {
+  if (!fontsLoaded) {
     return null;
   }
 
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        Keyboard.dismiss();
-      }}
-    >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <ImageBackground source={BACK_GROUND} style={styles.backGroundImg}>
-          {/* <RegistrationScreen /> */}
+        <ImageBackground
+          source={require("./assets/images/photoBG.png")}
+          style={styles.backGroundImg}
+        >
           <LoginScreen />
+          {/* <RegistrationScreen /> */}
         </ImageBackground>
         <StatusBar style="auto" />
       </View>
@@ -42,9 +41,11 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#ffffff",
   },
   backGroundImg: {
     flex: 1,
-    backgroundSize: "cover",
+    resizeMode: "cover",
+    justifyContent: "flex-end",
   },
 });

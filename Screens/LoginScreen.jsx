@@ -9,21 +9,11 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 
-import { Formik } from "formik";
-
-const initialValues = {
-  login: "",
-  email: "",
-  password: "",
-};
-
-const handleSubmit = (values) => {
-  console.log("Form submitted:", values);
-};
-
 const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
+
+  console.log(isKeyboardShown);
 
   const togglePasswordVisible = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -38,66 +28,62 @@ const LoginScreen = () => {
         <View
           style={{
             ...styles.formWrapper,
-            paddingBottom: isKeyboardShown ? 10 : 111,
+            paddingBottom: isKeyboardShown ? 10 : 110,
             height: isKeyboardShown ? 250 : "auto",
           }}
         >
           <Text style={styles.title}>Увійти</Text>
-          <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-            {({ handleChange, handleSubmit, values }) => (
-              <View>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Адреса електронної пошти"
-                  onFocus={() => {
-                    setIsKeyboardShown(true);
-                  }}
-                />
 
-                <View>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Пароль"
-                    secureTextEntry={!showPassword}
-                    onFocus={() => {
-                      setIsKeyboardShown(true);
-                    }}
-                  />
-                  <TouchableOpacity
-                    style={styles.showPassword}
-                    onPress={togglePasswordVisible}
-                  >
-                    <Text style={[styles.text, styles.showBtn]}>
-                      {showPassword ? "Приховати" : "Показати"}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+          <TextInput
+            style={[styles.text, styles.input]}
+            placeholder="Адреса електронної пошти"
+            onFocus={() => {
+              setIsKeyboardShown(true);
+            }}
+            onBlur={() => {
+              setIsKeyboardShown(false);
+            }}
+          />
 
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => setIsKeyboardShown(false)}
-                >
-                  <Text style={[styles.text, styles.buttonText]}>Увійти</Text>
-                </TouchableOpacity>
-                <View style={styles.signInContainer}>
-                  <Text style={[styles.text, styles.signInText]}>
-                    Немає акаунту?
-                  </Text>
-                  <TouchableOpacity>
-                    <Text
-                      style={[
-                        styles.text,
-                        styles.signInText,
-                        styles.signInLink,
-                      ]}
-                    >
-                      Зареєструватися
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            )}
-          </Formik>
+          <View>
+            <TextInput
+              style={[styles.text, styles.input]}
+              placeholder="Пароль"
+              secureTextEntry={!showPassword}
+              onFocus={() => {
+                setIsKeyboardShown(true);
+              }}
+              onBlur={() => {
+                setIsKeyboardShown(false);
+              }}
+            />
+            <TouchableOpacity
+              style={styles.showPassword}
+              onPress={togglePasswordVisible}
+              onBlur={() => {
+                setIsKeyboardShown(false);
+              }}
+            >
+              <Text style={[styles.text, styles.showBtn]}>
+                {showPassword ? "Приховати" : "Показати"}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => setIsKeyboardShown(false)}
+          >
+            <Text style={[styles.text, styles.buttonText]}>Увійти</Text>
+          </TouchableOpacity>
+          <View style={styles.signInContainer}>
+            <Text style={[styles.text, styles.signInText]}>Немає акаунту?</Text>
+            <TouchableOpacity>
+              <Text style={[styles.text, styles.signInText, styles.signInLink]}>
+                Зареєструватися
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </KeyboardAvoidingView>
