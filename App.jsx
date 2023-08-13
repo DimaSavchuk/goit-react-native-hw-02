@@ -9,8 +9,8 @@ import {
 import { useFonts } from "expo-font";
 
 import BACK_GROUND from "./assets/images/photoBG.png";
-import LoginScreen from "./Screens/LoginScreen";
 import RegistrationScreen from "./Screens/RegistrationScreen";
+import LoginScreen from "./Screens/LoginScreen";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -25,12 +25,9 @@ export default function App() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <ImageBackground
-          source={require("./assets/images/photoBG.png")}
-          style={styles.backGroundImg}
-        >
-          <LoginScreen />
-          {/* <RegistrationScreen /> */}
+        <ImageBackground source={BACK_GROUND} style={styles.backGroundImg}>
+          {/* <LoginScreen /> */}
+          <RegistrationScreen />
         </ImageBackground>
         <StatusBar style="auto" />
       </View>

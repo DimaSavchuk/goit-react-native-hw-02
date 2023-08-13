@@ -1,89 +1,135 @@
+import React, { useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
   Platform,
+  KeyboardAvoidingView,
+  SafeAreaView,
 } from "react-native";
-import React, { useState } from "react";
+import { Formik } from "formik";
+import * as yup from "yup";
+
+const initialValues = {
+  email: "",
+  password: "",
+};
+
+const validationSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Введіть правильний email")
+    .required("Email є обов'язковим полем"),
+  password: yup
+    .string()
+    .min(6, "Password повинен містити принаймні 6 символів")
+    .required("Password є обов'язковим полем"),
+});
 
 const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
 
-  console.log(isKeyboardShown);
-
   const togglePasswordVisible = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
+  const handleSubmit = (values) => {
+    console.log(`
+    Email: ${values.email}
+    Password: ${values.password}
+    `);
+  };
+
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
       <View style={styles.container}>
         <View
           style={{
             ...styles.formWrapper,
-            paddingBottom: isKeyboardShown ? 10 : 110,
-            height: isKeyboardShown ? 250 : "auto",
+            paddingBottom: isKeyboardShown ? 10 : 78,
+            height: isKeyboardShown ? 360 : "auto",
           }}
         >
           <Text style={styles.title}>Увійти</Text>
 
-          <TextInput
-            style={[styles.text, styles.input]}
-            placeholder="Адреса електронної пошти"
-            onFocus={() => {
-              setIsKeyboardShown(true);
-            }}
-            onBlur={() => {
-              setIsKeyboardShown(false);
-            }}
-          />
-
-          <View>
-            <TextInput
-              style={[styles.text, styles.input]}
-              placeholder="Пароль"
-              secureTextEntry={!showPassword}
-              onFocus={() => {
-                setIsKeyboardShown(true);
-              }}
-              onBlur={() => {
-                setIsKeyboardShown(false);
-              }}
-            />
-            <TouchableOpacity
-              style={styles.showPassword}
-              onPress={togglePasswordVisible}
-              onBlur={() => {
-                setIsKeyboardShown(false);
-              }}
-            >
-              <Text style={[styles.text, styles.showBtn]}>
-                {showPassword ? "Приховати" : "Показати"}
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => setIsKeyboardShown(false)}
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
           >
-            <Text style={[styles.text, styles.buttonText]}>Увійти</Text>
-          </TouchableOpacity>
-          <View style={styles.signInContainer}>
-            <Text style={[styles.text, styles.signInText]}>Немає акаунту?</Text>
-            <TouchableOpacity>
-              <Text style={[styles.text, styles.signInText, styles.signInLink]}>
-                Зареєструватися
-              </Text>
-            </TouchableOpacity>
-          </View>
+            {({ handleChange, handleSubmit, values, errors, touched }) => (
+              <SafeAreaView>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Адреса електронної пошти"
+                  value={values.email}
+                  onChangeText={handleChange("email")}
+                  onFocus={() => {
+                    setIsKeyboardShown(true);
+                  }}
+                  onBlur={() => {
+                    setIsKeyboardShown(false);
+                  }}
+                />
+                {touched.email && errors.email && (
+                  <Text style={styles.errorText}>{errors.email}</Text>
+                )}
+
+                <View>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Пароль"
+                    secureTextEntry={!showPassword}
+                    value={values.password}
+                    onChangeText={handleChange("password")}
+                    onFocus={() => {
+                      setIsKeyboardShown(true);
+                    }}
+                    onBlur={() => {
+                      setIsKeyboardShown(false);
+                    }}
+                  />
+                  <TouchableOpacity
+                    style={styles.showPassword}
+                    onPress={togglePasswordVisible}
+                  >
+                    <Text style={[styles.text, styles.showBtn]}>
+                      {showPassword ? "Приховати" : "Показати"}
+                    </Text>
+                  </TouchableOpacity>
+                  {touched.password && errors.password && (
+                    <Text style={styles.errorText}>{errors.password}</Text>
+                  )}
+                </View>
+
+                <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                  <Text style={[styles.text, styles.buttonText]}>Увійти</Text>
+                </TouchableOpacity>
+                <View style={styles.signInContainer}>
+                  <Text style={[styles.text, styles.signInText]}>
+                    Немає акаунту?{" "}
+                  </Text>
+                  <TouchableOpacity>
+                    <Text
+                      style={[
+                        styles.text,
+                        styles.signInText,
+                        styles.signInLink,
+                      ]}
+                    >
+                      Зареєструватися
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </SafeAreaView>
+            )}
+          </Formik>
         </View>
       </View>
     </KeyboardAvoidingView>
@@ -174,5 +220,10 @@ const styles = StyleSheet.create({
 
   signInLink: {
     textDecorationLine: "underline",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+    marginBottom: 8,
   },
 });
