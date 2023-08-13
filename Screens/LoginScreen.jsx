@@ -11,11 +11,14 @@ import React, { useState } from "react";
 
 import { Formik } from "formik";
 
+const initialValues = {
+  email: "",
+  password: "",
+};
+
 const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
-
-  console.log(isKeyboardShown);
 
   const togglePasswordVisible = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -36,7 +39,7 @@ const LoginScreen = () => {
         >
           <Text style={styles.title}>Увійти</Text>
 
-          <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+          <Formik initialValues={initialValues}>
             {({ handleChange, handleSubmit, values }) => (
               <View>
                 <TextInput
