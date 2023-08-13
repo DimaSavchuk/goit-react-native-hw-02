@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 
+import { Formik } from "formik";
+
 const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
@@ -34,56 +36,70 @@ const LoginScreen = () => {
         >
           <Text style={styles.title}>Увійти</Text>
 
-          <TextInput
-            style={[styles.text, styles.input]}
-            placeholder="Адреса електронної пошти"
-            onFocus={() => {
-              setIsKeyboardShown(true);
-            }}
-            onBlur={() => {
-              setIsKeyboardShown(false);
-            }}
-          />
+          <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+            {({ handleChange, handleSubmit, values }) => (
+              <View>
+                <TextInput
+                  style={[styles.text, styles.input]}
+                  placeholder="Адреса електронної пошти"
+                  onFocus={() => {
+                    setIsKeyboardShown(true);
+                  }}
+                  onBlur={() => {
+                    setIsKeyboardShown(false);
+                  }}
+                />
 
-          <View>
-            <TextInput
-              style={[styles.text, styles.input]}
-              placeholder="Пароль"
-              secureTextEntry={!showPassword}
-              onFocus={() => {
-                setIsKeyboardShown(true);
-              }}
-              onBlur={() => {
-                setIsKeyboardShown(false);
-              }}
-            />
-            <TouchableOpacity
-              style={styles.showPassword}
-              onPress={togglePasswordVisible}
-              onBlur={() => {
-                setIsKeyboardShown(false);
-              }}
-            >
-              <Text style={[styles.text, styles.showBtn]}>
-                {showPassword ? "Приховати" : "Показати"}
-              </Text>
-            </TouchableOpacity>
-          </View>
+                <View>
+                  <TextInput
+                    style={[styles.text, styles.input]}
+                    placeholder="Пароль"
+                    secureTextEntry={!showPassword}
+                    onFocus={() => {
+                      setIsKeyboardShown(true);
+                    }}
+                    onBlur={() => {
+                      setIsKeyboardShown(false);
+                    }}
+                  />
+                  <TouchableOpacity
+                    style={styles.showPassword}
+                    onPress={togglePasswordVisible}
+                    onBlur={() => {
+                      setIsKeyboardShown(false);
+                    }}
+                  >
+                    <Text style={[styles.text, styles.showBtn]}>
+                      {showPassword ? "Приховати" : "Показати"}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => setIsKeyboardShown(false)}
-          >
-            <Text style={[styles.text, styles.buttonText]}>Увійти</Text>
-          </TouchableOpacity>
-          <View style={styles.signInContainer}>
-            <Text style={[styles.text, styles.signInText]}>Немає акаунту?</Text>
-            <TouchableOpacity>
-              <Text style={[styles.text, styles.signInText, styles.signInLink]}>
-                Зареєструватися
-              </Text>
-            </TouchableOpacity>
-          </View>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => setIsKeyboardShown(false)}
+                >
+                  <Text style={[styles.text, styles.buttonText]}>Увійти</Text>
+                </TouchableOpacity>
+                <View style={styles.signInContainer}>
+                  <Text style={[styles.text, styles.signInText]}>
+                    Немає акаунту?
+                  </Text>
+                  <TouchableOpacity>
+                    <Text
+                      style={[
+                        styles.text,
+                        styles.signInText,
+                        styles.signInLink,
+                      ]}
+                    >
+                      Зареєструватися
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+          </Formik>
         </View>
       </View>
     </KeyboardAvoidingView>
